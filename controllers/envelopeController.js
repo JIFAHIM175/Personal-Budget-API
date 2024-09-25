@@ -21,7 +21,12 @@ const createEnvelope = (req,res,next) => {
     return res.status(201).json(newEnvelope);
 };
 
+const getAllEnvelopes = (req,res,next) => {
+    res.status(200).json(envelopes)
+}
+
 module.exports = {
-    createEnvelope
+    createEnvelope,
+    getAllEnvelopes
 };
 
