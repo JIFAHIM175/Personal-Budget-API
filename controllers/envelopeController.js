@@ -25,8 +25,20 @@ const getAllEnvelopes = (req,res,next) => {
     res.status(200).json(envelopes)
 }
 
+const getEnvelopeById = (req, res) => {
+    const { id } = req.params; // Get ID from request params
+    const envelope = envelopes.find(env => env.id === parseInt(id)); // Find the envelope with the matching ID
+
+    if (!envelope) {
+        return res.status(404).json({ message: 'Envelope not found' }); // If no envelope is found, return a 404
+    }
+
+    res.status(200).json(envelope); // If envelope is found, return it with a 200 status
+};
+
 module.exports = {
     createEnvelope,
-    getAllEnvelopes
+    getAllEnvelopes,
+    getEnvelopeById
 };
 
