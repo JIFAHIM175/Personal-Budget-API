@@ -59,10 +59,27 @@ const updateEnvelope = (req, res) => {
     res.status(200).json(envelope);
 };
 
+// Controller for deleting an envelope by ID
+const deleteEnvelope = (req, res) => {
+    const { id } = req.params;  // Get the ID from the request params
+    const envelopeIndex = envelopes.findIndex(env => env.id === parseInt(id));  // Find the index of the envelope
+
+    if (envelopeIndex === -1) {
+        return res.status(404).json({ message: 'Envelope not found' });  // If not found, return a 404 error
+    }
+
+    // Remove the envelope from the array
+    envelopes.splice(envelopeIndex, 1);
+
+    // Respond with a 204 No Content status, indicating successful deletion
+    res.status(204).send();
+};
+
 module.exports = {
     createEnvelope,
     getAllEnvelopes,
     getEnvelopeById,
-    updateEnvelope
+    updateEnvelope,
+    deleteEnvelope
 };
 
