@@ -36,9 +36,33 @@ const getEnvelopeById = (req, res) => {
     res.status(200).json(envelope); // If envelope is found, return it with a 200 status
 };
 
+// Controller for updating an envelope by ID
+const updateEnvelope = (req, res) => {
+    const { id } = req.params;  // Get the ID from the request params
+    const { name, amount } = req.body;  // Get the new data from the request body
+    const envelope = envelopes.find(env => env.id === parseInt(id));  // Find the envelope by its ID
+
+    if (!envelope) {
+        return res.status(404).json({ message: 'Envelope not found' });  // If not found, return a 404 error
+    }
+
+    // Update the envelope properties if they are provided in the request body
+    if (name) envelope.name = name;
+    if (amount) {
+        if (amount < 0) {
+            return res.status(400).json({ message: 'Amount cannot be negative' });
+        }
+        envelope.amount = amount;
+    }
+
+    // Return the updated envelope
+    res.status(200).json(envelope);
+};
+
 module.exports = {
     createEnvelope,
     getAllEnvelopes,
-    getEnvelopeById
+    getEnvelopeById,
+    updateEnvelope
 };
 

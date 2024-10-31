@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { createEnvelope, getAllEnvelopes, getEnvelopeById } = require('../controllers/envelopeController')
+const { createEnvelope, getAllEnvelopes, getEnvelopeById, updateEnvelope } = require('../controllers/envelopeController')
 
 router.post('/envelopes', createEnvelope)
 
 router.get('/envelopes', getAllEnvelopes)
 
 router.get('/envelopes/:id', getEnvelopeById)
+
+// PUT route to update a specific envelope by its ID
+router.put('/envelopes/:id', updateEnvelope);  // New route to update an envelope
 
 
 module.exports = router;
