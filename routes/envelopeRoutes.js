@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createEnvelope, getAllEnvelopes, getEnvelopeById, updateEnvelope, deleteEnvelope } = require('../controllers/envelopeController')
+const { createEnvelope, getAllEnvelopes, getEnvelopeById, updateEnvelope, deleteEnvelope, transferAmount } = require('../controllers/envelopeController')
 
 router.post('/envelopes', createEnvelope)
 
@@ -13,5 +13,7 @@ router.put('/envelopes/:id', updateEnvelope);  // New route to update an envelop
 
 // DELETE route to remove a specific envelope by ID
 router.delete('/envelopes/:id', deleteEnvelope);
+
+router.post('/envelopes/transfer/:fromId/:toId', transferAmount);
 
 module.exports = router;

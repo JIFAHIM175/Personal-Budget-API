@@ -75,11 +75,43 @@ const deleteEnvelope = (req, res) => {
     res.status(204).send();
 };
 
+// Controller to transfer an amount from one envelope to another
+const transferAmount = (req, res) => {
+    const { fromId, toId } = req.params;  // Source and destination envelope IDs
+    const { amount } = req.body;  // Amount to transfer
+
+    // Find the source and destination envelopes
+    const sourceEnvelope = envelopes.find(env => env.id === parseInt(fromId));
+    const destinationEnvelope = envelopes.find(env => env.id === parseInt(toId));
+
+    // Validate the envelopes and amount
+    if (!sourceEnvelope || !destinationEnvelope) {
+        return res.status(404).json({ error: 'One or both envelopes not found' });
+    }
+    if (amount <= 0 || typeof amount !== 'number') {
+        return res.status(400).json({ error: 'Transfer amount must be a positive number' });
+    }
+    if (sourceEnvelope.amount < amount) {
+        return res.status(400).json({ error: 'Insufficient funds in the source envelope' });
+    }
+
+    // Transfer the amount
+    sourceEnvelope.amount -= amount;
+    destinationEnvelope.amount += amount;
+
+    res.status(200).json({
+        message: `Transferred ${amount} from envelope ${fromId} to envelope ${toId}`,
+        sourceEnvelope,
+        destinationEnvelope
+    });
+};
+
 module.exports = {
     createEnvelope,
     getAllEnvelopes,
     getEnvelopeById,
     updateEnvelope,
-    deleteEnvelope
+    deleteEnvelope,
+    transferAmount
 };
 
